@@ -39,7 +39,7 @@ public class ConvertHexToBase64 {
       int shiftRight = shiftLeft + (8-(offset+6));
       int tmp = ((bytes[byteIdx] << shiftLeft) & 0xFF);
       tmp = ((tmp >> shiftRight) & 0xFF);
-      if (numBitsFromNextByte > 0 && i < bytes.length-1)
+      if (numBitsFromNextByte > 0 && byteIdx < bytes.length-1)
         tmp += (bytes[byteIdx+1] >> (8-numBitsFromNextByte));
       base64[i] = BASE_64.charAt(tmp);
     }
