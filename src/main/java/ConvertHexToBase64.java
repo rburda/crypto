@@ -5,7 +5,7 @@ public class ConvertHexToBase64 {
   private static String BASE_64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
   public static void main(String args[]) {
-    String hex = "6f6f6d";
+    String hex = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
     char[] hexChar = hex.toCharArray();
     byte[] bytes = new byte[(int) Math.ceil((double)hexChar.length / (double)2)];
     int cnt = 0;
@@ -16,6 +16,7 @@ public class ConvertHexToBase64 {
       cnt++;
     }
 
+    /*
     for (int i=0; i < bytes.length; i++)
     {
       for (int j=7; j >=0; j--)
@@ -25,22 +26,23 @@ public class ConvertHexToBase64 {
       System.out.print(" ");
     }
     System.out.println("\n**");
-
+    */
     int extra = ((bytes.length * 8) % 6) > 0 ? 1 : 0;
     char[] base64 = new char[(bytes.length * 8 / 6) + extra];
-    for (int i=0; i < bytes.length; i++)
+    for (int i=0; i < base64.length; i++)
     {
-      int numBits = 6*i;
-      int byteIdx = ((6*i)/8);
-      int offset = (numBits < 8 ? numBits : (numBits % 8));
+      int startingBit = 6*i;
+      int byteIdx = (startingBit/8);
+      int offset = (startingBit % 8);
       int numBitsFromNextByte = Math.max(0, ((offset + 6) - 8));
-      int base64Idx = Integer.valueOf( bytes[byteIdx] >> (8 - (6 - numBitsFromNextByte)));
+      int shiftLeft = offset;
+      int shiftRight = shiftLeft + (8-(offset+6));
+      int tmp = ((bytes[byteIdx] << shiftLeft) & 0xFF);
+      tmp = ((tmp >> shiftRight) & 0xFF);
       if (numBitsFromNextByte > 0 && i < bytes.length-1)
-        base64Idx += Integer.valueOf (bytes[byteIdx] & numBitsFromNextByte);
-      base64[i] = BASE_64.charAt(base64Idx);
+        tmp += (bytes[byteIdx+1] >> (8-numBitsFromNextByte));
+      base64[i] = BASE_64.charAt(tmp);
     }
-
    System.out.println(String.valueOf(base64));
   }
-
 }
