@@ -10,7 +10,7 @@ public class HexString {
 		hex = s;
 	}
 
-	public byte[] toBinary() {
+	public BinaryString toBinary() {
 		char[] hexChar = hex.toCharArray();
 		byte[] bytes = new byte[(int) Math.ceil((double)hexChar.length / (double)2)];
 		int cnt = 0;
@@ -20,6 +20,6 @@ public class HexString {
 			bytes[i-1] = (byte)(Integer.parseInt(hexByte, 16) & 0xFF);
 			cnt++;
 		}
-		return bytes;
+		return new BinaryString(bytes);
 	}
 }

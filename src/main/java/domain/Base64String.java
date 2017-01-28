@@ -4,13 +4,14 @@ public class Base64String {
 
 	private static String BASE_64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-	private final byte[] bytes;
+	private final BinaryString binary;
 
-	public Base64String(byte[] b) {
-		this.bytes = b;
+	public Base64String(BinaryString bs) {
+		this.binary = bs;
 	}
 
 	public String toBase64() {
+		byte[] bytes = binary.getRawBytes();
 		int extra = ((bytes.length * 8) % 6) > 0 ? 1 : 0;
 		char[] base64 = new char[(bytes.length * 8 / 6) + extra];
 		for (int i=0; i < base64.length; i++)

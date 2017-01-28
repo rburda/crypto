@@ -1,4 +1,5 @@
 import domain.Base64String;
+import domain.BinaryString;
 import domain.HexString;
 
 /**
@@ -59,32 +60,21 @@ import domain.HexString;
  */
 public class ConvertHexToBase64 {
 
-  private static String BASE_64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
   public static void main(String args[]) {
     //our input
     String input = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
     //String input ="6d";
 
     //1) convert hex string to binary
-    HexString hex = new HexString(input);
-    byte[] hexAsBinary = hex.toBinary();
+    BinaryString binary = new HexString(input).toBinary();
 
     //sanity check: show what the bit string is of the hex string converted to binary
     System.out.println("*** Hex as Binary ***");
-    for (int i=0; i < hexAsBinary.length; i++)
-    {
-      for (int j=7; j >=0; j--)
-      {
-        System.out.print((hexAsBinary[i] >> j) & 1);
-      }
-      System.out.print(" ");
-    }
+    System.out.println(binary.toBitString());
     System.out.println("\n");
 
     //2) iterate over the bit string 6 bits at a time
-
-    Base64String base64String = new Base64String(hexAsBinary);
+    Base64String base64String = new Base64String(binary);
 
     //output the final result
     System.out.println("*** Base 64 ***");
