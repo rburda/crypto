@@ -1,4 +1,5 @@
-import java.util.Arrays;
+import domain.Base64String;
+import domain.HexString;
 
 /**
  Overview:
@@ -62,53 +63,31 @@ public class ConvertHexToBase64 {
 
   public static void main(String args[]) {
     //our input
-    String hex = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
-    //String hex ="6d";
+    String input = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
+    //String input ="6d";
 
     //1) convert hex string to binary
-    char[] hexChar = hex.toCharArray();
-    byte[] bytes = new byte[(int) Math.ceil((double)hexChar.length / (double)2)];
-    int cnt = 0;
-    for (int i = bytes.length; i > 0; i--) {
-      int idx = Math.max(0, hex.length()-(cnt*2)-2);
-      String hexByte = String.valueOf(Arrays.copyOfRange(hexChar, idx, idx + 2));
-      bytes[i-1] = (byte)(Integer.parseInt(hexByte, 16) & 0xFF);
-      cnt++;
-    }
-
+    HexString hex = new HexString(input);
+    byte[] hexAsBinary = hex.toBinary();
 
     //sanity check: show what the bit string is of the hex string converted to binary
-    for (int i=0; i < bytes.length; i++)
+    System.out.println("*** Hex as Binary ***");
+    for (int i=0; i < hexAsBinary.length; i++)
     {
       for (int j=7; j >=0; j--)
       {
-        System.out.print((bytes[i] >> j) & 1);
+        System.out.print((hexAsBinary[i] >> j) & 1);
       }
       System.out.print(" ");
     }
-    System.out.println("\n**");
+    System.out.println("\n");
 
     //2) iterate over the bit string 6 bits at a time
-    int extra = ((bytes.length * 8) % 6) > 0 ? 1 : 0;
-    char[] base64 = new char[(bytes.length * 8 / 6) + extra];
-    for (int i=0; i < base64.length; i++)
-    {
-      int startingBit = 6*i;
-      int byteIdx = (startingBit/8);
-      int offset = (startingBit % 8);
-      int numBitsFromNextByte = Math.max(0, ((offset + 6) - 8));
-      int shiftLeft = offset;
-      int shiftRight = shiftLeft + (8-(offset+6));
-      int tmp = ((bytes[byteIdx] << shiftLeft) & 0xFF);
-      tmp = ((tmp >> shiftRight) & 0xFF);
-      if (numBitsFromNextByte > 0 && byteIdx < bytes.length-1)
-        tmp += (bytes[byteIdx+1] >> (8-numBitsFromNextByte));
 
-      //3) calculate the base_64 character by converting the bits to base10 and then do a simple lookup
-      base64[i] = BASE_64.charAt(tmp);
-    }
+    Base64String base64String = new Base64String(hexAsBinary);
 
     //output the final result
-    System.out.println(String.valueOf(base64));
+    System.out.println("*** Base 64 ***");
+    System.out.println(String.valueOf(base64String.toBase64()));
   }
 }
