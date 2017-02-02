@@ -22,4 +22,9 @@ public class HexString {
 		}
 		return new BinaryString(bytes);
 	}
+
+	@Override
+	public String toString() {
+		return hex;
+	}
 }

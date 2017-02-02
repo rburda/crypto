@@ -22,7 +22,7 @@ public class Base64String {
 			int numBitsFromNextByte = Math.max(0, ((offset + 6) - 8));
 			int shiftLeft = offset;
 			int shiftRight = shiftLeft + (8-(offset+6));
-			int tmp = ((bytes[byteIdx] << shiftLeft) & 0xFF);
+			int tmp = ((bytes[byteIdx] << shiftLeft) & 0xFF); //logical and by '0xFF' gives an unsigned int
 			tmp = ((tmp >> shiftRight) & 0xFF);
 			if (numBitsFromNextByte > 0 && byteIdx < bytes.length-1)
 				tmp += (bytes[byteIdx+1] >> (8-numBitsFromNextByte));
