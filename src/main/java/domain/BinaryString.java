@@ -17,6 +17,14 @@ public class BinaryString {
 		return bytes;
 	}
 
+	public BinaryString sbXor(byte b) {
+		byte[] xor = new byte[bytes.length];
+		for (int i=0; i < bytes.length; i++) {
+			xor[i] = (byte)(bytes[i]^b);
+		}
+		return new BinaryString(xor);
+	}
+
 	public BinaryString xor(BinaryString bs) {
 		if (bs.getRawBytes().length != bytes.length) {
 			throw new IllegalArgumentException("binary strings must be same length");
