@@ -17,21 +17,22 @@ public class BinaryString {
 		return bytes;
 	}
 
-	public BinaryString sbXor(byte b) {
-		byte[] xor = new byte[bytes.length];
-		for (int i=0; i < bytes.length; i++) {
-			xor[i] = (byte)(bytes[i]^b);
-		}
-		return new BinaryString(xor);
+	public BinaryString singleByteXor(byte b) {
+		return repeatingKeyXor(new BinaryString(new byte[]{b}));
 	}
 
-	public BinaryString xor(BinaryString bs) {
+	public BinaryString fixedXor(BinaryString bs) {
 		if (bs.getRawBytes().length != bytes.length) {
 			throw new IllegalArgumentException("binary strings must be same length");
 		}
+		return repeatingKeyXor(bs);
+	}
+
+	public BinaryString repeatingKeyXor(BinaryString bs) {
 		byte[] xor = new byte[bytes.length];
+		byte[] repeater = bs.getRawBytes();
 		for (int i=0; i < bytes.length; i++) {
-			xor[i] = (byte)(bytes[i]^bs.bytes[i]);
+			xor[i] = (byte)(bytes[i]^repeater[i % repeater.length]);
 		}
 		return new BinaryString(xor);
 	}

@@ -22,7 +22,7 @@ public class SingleByteXORDecoder {
 
 		//0-127 is the range of ascii chars
 		for (int i=0; i < 128; i++) {
-			String tempGuess = input.sbXor((byte)i).toAscii();
+			String tempGuess = input.singleByteXor((byte) i).toAscii();
 			EnglishScorer scorer = new EnglishScorer(tempGuess);
 			int tempScore = scorer.calculateScore();
 			if (bestResult == null || bestResult.score < tempScore) {
