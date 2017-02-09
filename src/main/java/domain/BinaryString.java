@@ -28,6 +28,14 @@ public class BinaryString {
 		return new BinaryString(xor);
 	}
 
+	public String toAscii() {
+		char[] chars = new char[bytes.length];
+		for (int i=0; i < bytes.length; i++) {
+			chars[i] = (char) (bytes[i] & 0xFF);
+		}
+		return new String(chars);
+	}
+
 	public HexString toHex() {
 		char[] hexChar = new char[bytes.length*2];
 		for (int i=0; i < hexChar.length; i++) {
