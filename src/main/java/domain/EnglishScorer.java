@@ -9,32 +9,38 @@ public class EnglishScorer {
 
 	static {
 		CHARACTER_SCORE = new HashMap<>();
-		CHARACTER_SCORE.put('e', 26);
-		CHARACTER_SCORE.put('t', 25);
-		CHARACTER_SCORE.put('a', 24);
-		CHARACTER_SCORE.put('i', 23);
-		CHARACTER_SCORE.put('o', 22);
-		CHARACTER_SCORE.put('n', 21);
-		CHARACTER_SCORE.put('s', 20);
-		CHARACTER_SCORE.put('h', 19);
-		CHARACTER_SCORE.put('r', 18);
-		CHARACTER_SCORE.put('d', 17);
-		CHARACTER_SCORE.put('l', 16);
-		CHARACTER_SCORE.put('c', 15);
-		CHARACTER_SCORE.put('u', 14);
-		CHARACTER_SCORE.put('m', 13);
-		CHARACTER_SCORE.put('w', 12);
-		CHARACTER_SCORE.put('f', 11);
-		CHARACTER_SCORE.put('g', 10);
-		CHARACTER_SCORE.put('y', 9);
-		CHARACTER_SCORE.put('p', 8);
-		CHARACTER_SCORE.put('b', 7);
-		CHARACTER_SCORE.put('v', 6);
-		CHARACTER_SCORE.put('k', 5);
-		CHARACTER_SCORE.put('j', 4);
-		CHARACTER_SCORE.put('x', 3);
-		CHARACTER_SCORE.put('q', 2);
-		CHARACTER_SCORE.put('z', 1);
+		CHARACTER_SCORE.put('e', 52);
+		CHARACTER_SCORE.put('t', 50);
+		CHARACTER_SCORE.put('a', 48);
+		CHARACTER_SCORE.put('i', 46);
+		CHARACTER_SCORE.put('o', 44);
+		CHARACTER_SCORE.put('n', 42);
+		CHARACTER_SCORE.put('s', 40);
+		CHARACTER_SCORE.put('h', 38);
+		CHARACTER_SCORE.put('r', 36);
+		CHARACTER_SCORE.put('d', 34);
+		CHARACTER_SCORE.put('l', 32);
+		CHARACTER_SCORE.put('c', 30);
+		CHARACTER_SCORE.put('u', 28);
+		CHARACTER_SCORE.put('m', 26);
+		CHARACTER_SCORE.put('w', 24);
+		CHARACTER_SCORE.put('f', 22);
+		CHARACTER_SCORE.put('g', 20);
+		CHARACTER_SCORE.put('y', 18);
+		CHARACTER_SCORE.put('p', 16);
+		CHARACTER_SCORE.put('b', 14);
+		CHARACTER_SCORE.put('v', 12);
+		CHARACTER_SCORE.put('k', 10);
+		CHARACTER_SCORE.put('j', 8);
+		CHARACTER_SCORE.put('x', 6);
+		CHARACTER_SCORE.put('q', 4);
+		CHARACTER_SCORE.put('z', 2);
+		CHARACTER_SCORE.put(' ', 5);
+		CHARACTER_SCORE.put('\'', 3);
+		CHARACTER_SCORE.put('\n', 5);
+		CHARACTER_SCORE.put(',', 2);
+		CHARACTER_SCORE.put('.', 2);
+		CHARACTER_SCORE.put('!', 2);
 	}
 
 	private final String text;
@@ -48,10 +54,10 @@ public class EnglishScorer {
 		for (char c: text.toCharArray()) {
 			Integer s = CHARACTER_SCORE.get(Character.toLowerCase(c));
 			if (s == null) {
-				if (Character.isDigit(c)) {
-					s = 0;
-				} else if (Character.isSpaceChar(c)) {
-					s = 1;
+				if (c < 32 || c >= 126) {
+					s = -10000; //non-printable char
+				} else if (c >= 33 && c <= 64) {
+					s = 1; //
 				} else {
 					s = -1;
 				}

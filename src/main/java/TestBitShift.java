@@ -9,7 +9,7 @@ public class TestBitShift {
 		byte y = (byte)0x2;
 		System.out.println("'2'         = " + BinaryString.toBitString(y));
 		System.out.println("'x'         = " + BinaryString.toBitString(x));
-		System.out.println("'x>>>2'     = " + BinaryString.toBitString((byte)(x>>>2)));
-		System.out.println("'x>>>2&0xFF = " + BinaryString.toBitString((byte)((x&0xFF)>>>2)));
+		System.out.println("'x>>>2'     = " + BinaryString.toBitString((byte)(x>>>2))); //this implicitly casts x to an int (and makes it signed) before the shift
+		System.out.println("'x>>>2&0xFF = " + BinaryString.toBitString((byte)((x&0xFF)>>>2))); //&OxFF prevents the implict cast from above
 	}
 }

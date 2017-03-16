@@ -16,6 +16,10 @@ public class SingleByteXORDecoder {
 		this.input = i.toBinary();
 	}
 
+	public SingleByteXORDecoder(BinaryString bs) {
+		input = bs;
+	}
+
 	public Result decode() {
 
 		Result bestResult = null;
@@ -28,9 +32,7 @@ public class SingleByteXORDecoder {
 			if (bestResult == null || bestResult.score < tempScore) {
 				bestResult = new Result(tempGuess, tempScore, (char)i);
 			}
-			//System.out.println("tempXorChar == " + (char)i + ", score == " + tempScore +", guess == " + tempGuess);
 		}
-
 
 		return bestResult;
 	}

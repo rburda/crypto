@@ -1,6 +1,7 @@
 package domain;
 
-import java.util.Arrays;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BinaryString {
 
@@ -43,10 +44,27 @@ public class BinaryString {
 	}
 
 	public BinaryString slice(int beg, int end) {
-		if (beg < 0 || end > bytes.length || beg > end) {
+		if (beg < 0 || beg > end) {
 			throw new IllegalArgumentException();
 		}
+		if (end > bytes.length) {
+			end = bytes.length;
+		}
 		return new BinaryString(Arrays.copyOfRange(bytes, beg, end));
+	}
+
+	public List<BinaryString> repeatedSlice(int blockLength) {
+		List<BinaryString> blocks = new ArrayList<>();
+		for (int i=0; i < bytes.length; i+=blockLength) {
+			blocks.add(slice(i, i+blockLength));
+		}
+		return blocks;
+	}
+
+	public BinaryString append(BinaryString bs) {
+		byte[] newBytes = Arrays.copyOf(bytes, bytes.length+bs.bytes.length);
+		System.arraycopy(bs.bytes, 0, newBytes, bytes.length, bs.bytes.length);
+		return new BinaryString(newBytes);
 	}
 
 	/**
@@ -117,6 +135,11 @@ public class BinaryString {
 		return new HexString(new String(hexChar));
 	}
 
+	@Override
+	public String toString() {
+		return toBitString();
+	}
+
 	public String toBitString() {
 		return toBitString(bytes);
 	}
@@ -137,8 +160,22 @@ public class BinaryString {
 		return builder.toString();
 	}
 
-	@Override
-	public String toString() {
-		return toBitString();
+	public static List<BinaryString> transposeByIndex(List<BinaryString> blocks) {
+		if (blocks == null || blocks.isEmpty()) {
+			throw new IllegalArgumentException("blocks cannot be empty");
+		}
+
+		Map<Integer, BinaryString> transposed = new HashMap<>();
+		int blockLength = blocks.get(0).bytes.length;
+		for (int i=1; i <= blockLength; i++) {
+			transposed.put(i, new BinaryString(new byte[]{}));
+			//System.out.println("transposing block: " + i);
+			for (BinaryString bs: blocks) {
+				if (bs.getRawBytes().length > (i-1)) {
+					transposed.put(i, transposed.get(i).append(bs.slice(i-1,i)));
+				}
+			}
+		}
+		return transposed.values().stream().collect(Collectors.toList());
 	}
 }
